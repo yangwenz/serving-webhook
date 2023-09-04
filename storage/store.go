@@ -18,7 +18,7 @@ type S3Store struct {
 	uploader *s3manager.Uploader
 }
 
-func NewS3Uploader(config utils.Config) (Store, error) {
+func NewS3Store(config utils.Config) (Store, error) {
 	awsConfig := aws.Config{Region: aws.String(config.AWSRegion)}
 	sess := session.Must(session.NewSession(&awsConfig))
 	uploader := s3manager.NewUploader(sess, func(u *s3manager.Uploader) {

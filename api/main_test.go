@@ -9,9 +9,9 @@ import (
 	"testing"
 )
 
-func newTestServer(t *testing.T, uploader storage.Store) *Server {
+func newTestServer(t *testing.T, store storage.Store, cache storage.Cache) *Server {
 	config := utils.Config{}
-	server, err := NewServer(config, uploader)
+	server, err := NewServer(config, store, cache)
 	require.NoError(t, err)
 	return server
 }

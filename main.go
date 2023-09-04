@@ -12,17 +12,22 @@ func main() {
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot load config")
 	}
-	// S3 uploader
-	uploader, err := storage.NewS3Uploader(config)
+	// S3 store
+	store, err := storage.NewS3Store(config)
 	if err != nil {
-		log.Fatal().Err(err).Msg("cannot create S3 uploader")
+		log.Fatal().Err(err).Msg("cannot create S3 store")
+	}
+	// Redis cache
+	cache, err := storage.NewRedisClient(config)
+	if err != nil {
+		log.Fatal().Err(err).Msg("cannot create redis cache")
 	}
 	// Start model API server
-	runGinServer(config, uploader)
+	runGinServer(config, store, cache)
 }
 
-func runGinServer(config utils.Config, uploader storage.Store) {
-	server, err := api.NewServer(config, uploader)
+func runGinServer(config utils.Config, store storage.Store, cache storage.Cache) {
+	server, err := api.NewServer(config, store, cache)
 	if err != nil {
 		log.Fatal().Err(err).Msg("cannot create server")
 	}

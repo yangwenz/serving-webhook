@@ -8,16 +8,18 @@ import (
 )
 
 type Server struct {
-	config   utils.Config
-	router   *gin.Engine
-	uploader storage.Store
+	config utils.Config
+	router *gin.Engine
+	store  storage.Store
+	cache  storage.Cache
 }
 
-func NewServer(config utils.Config, uploader storage.Store) (*Server, error) {
+func NewServer(config utils.Config, store storage.Store, cache storage.Cache) (*Server, error) {
 	server := Server{
-		config:   config,
-		router:   nil,
-		uploader: uploader,
+		config: config,
+		router: nil,
+		store:  store,
+		cache:  cache,
 	}
 	server.setupRouter()
 	return &server, nil
@@ -30,6 +32,11 @@ func (server *Server) setupRouter() {
 	router.GET("/live", server.checkHealth)
 	router.GET("/ready", server.checkHealth)
 	router.POST("/upload", server.Upload)
+
+	taskRoutes := router.Group("/task")
+	taskRoutes.POST("/create", server.Create)
+	taskRoutes.GET("/get", server.Get)
+	taskRoutes.PUT("/update", server.Update)
 
 	server.router = router
 }

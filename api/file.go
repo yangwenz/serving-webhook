@@ -28,7 +28,7 @@ func (server *Server) Upload(ctx *gin.Context) {
 
 	id := uuid.New()
 	ext := filepath.Ext(file.Filename)
-	location, err := server.uploader.Upload(src, id.String()+ext)
+	location, err := server.store.Upload(src, id.String()+ext)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
