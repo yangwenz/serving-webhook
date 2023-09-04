@@ -19,7 +19,7 @@ type TaskInfo struct {
 }
 
 type CreateRequest struct {
-	ModelName    string `json:"model_name"`
+	ModelName    string `json:"model_name" binding:"required"`
 	ModelVersion string `json:"model_version"`
 }
 
@@ -116,5 +116,5 @@ func (server *Server) Update(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"id": task.ID})
+	ctx.JSON(http.StatusOK, task)
 }
