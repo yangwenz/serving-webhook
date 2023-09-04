@@ -2,7 +2,9 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"net/http"
+	"path/filepath"
 )
 
 /*
@@ -24,10 +26,12 @@ func (server *Server) Upload(ctx *gin.Context) {
 	}
 	defer src.Close()
 
-	location, err := server.uploader.Upload(src, file.Filename)
+	id := uuid.New()
+	ext := filepath.Ext(file.Filename)
+	location, err := server.uploader.Upload(src, id.String()+ext)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"path": location})
+	ctx.JSON(http.StatusOK, gin.H{"url": location})
 }
