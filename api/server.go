@@ -34,9 +34,9 @@ func (server *Server) setupRouter() {
 	router.POST("/upload", server.Upload)
 
 	taskRoutes := router.Group("/task")
-	taskRoutes.POST("/create", server.Create)
-	taskRoutes.GET("/get", server.Get)
-	taskRoutes.PUT("/update", server.Update)
+	taskRoutes.POST("/", server.Create)
+	taskRoutes.GET("/", server.Get)
+	taskRoutes.PUT("/", server.Update)
 
 	server.router = router
 }
