@@ -1,33 +1,33 @@
 package storage
 
 import (
-	"bytes"
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/yangwenz/model-webhook/utils"
+	"io"
 )
 
-type Uploader struct {
+type S3Uploader struct {
 	config   utils.Config
 	uploader *s3manager.Uploader
 }
 
-func NewUploader(config utils.Config) (*Uploader, error) {
+func NewS3Uploader(config utils.Config) (Store, error) {
 	awsConfig := aws.Config{Region: aws.String(config.AWSRegion)}
 	sess := session.Must(session.NewSession(&awsConfig))
 	uploader := s3manager.NewUploader(sess, func(u *s3manager.Uploader) {
 		u.Concurrency = 5
 	})
-	return &Uploader{config: config, uploader: uploader}, nil
+	return &S3Uploader{config: config, uploader: uploader}, nil
 }
 
-func (uploader *Uploader) Upload(fileBuffer []byte, fileKey string) (string, error) {
+func (uploader *S3Uploader) Upload(fileReader io.Reader, fileKey string) (string, error) {
 	result, err := uploader.uploader.Upload(&s3manager.UploadInput{
 		Bucket: aws.String(uploader.config.AWSBucket),
 		Key:    aws.String(fileKey),
-		Body:   bytes.NewReader(fileBuffer),
+		Body:   fileReader,
 	})
 	if err != nil {
 		return "", fmt.Errorf("failed to upload file, %v", err)

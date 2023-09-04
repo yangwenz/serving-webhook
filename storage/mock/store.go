@@ -5,6 +5,7 @@
 package mockstore
 
 import (
+	io "io"
 	reflect "reflect"
 
 	gomock "go.uber.org/mock/gomock"
@@ -34,7 +35,7 @@ func (m *MockStore) EXPECT() *MockStoreMockRecorder {
 }
 
 // Upload mocks base method.
-func (m *MockStore) Upload(arg0 []byte, arg1 string) (string, error) {
+func (m *MockStore) Upload(arg0 io.Reader, arg1 string) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Upload", arg0, arg1)
 	ret0, _ := ret[0].(string)

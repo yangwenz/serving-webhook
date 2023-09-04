@@ -1,5 +1,7 @@
 package storage
 
+import "io"
+
 type Store interface {
-	Upload(fileBuffer []byte, fileKey string) (string, error)
+	Upload(fileReader io.Reader, fileKey string) (string, error)
 }
