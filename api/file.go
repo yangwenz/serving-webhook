@@ -24,7 +24,7 @@ func (server *Server) Upload(ctx *gin.Context) {
 	}
 	defer src.Close()
 
-	location, err := server.uploader.Upload(src, "tmp")
+	location, err := server.uploader.Upload(src, file.Filename)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
