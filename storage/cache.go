@@ -9,7 +9,7 @@ import (
 )
 
 type Cache interface {
-	GetKey(key string, value interface{}) error
+	GetKey(key string) (string, error)
 	SetKey(key string, value interface{}, expiration time.Duration) error
 }
 
@@ -50,16 +50,12 @@ func NewRedisClient(config utils.Config) (Cache, error) {
 	}
 }
 
-func (client *RedisClusterClient) GetKey(key string, value interface{}) error {
+func (client *RedisClusterClient) GetKey(key string) (string, error) {
 	val, err := client.client.Get(context.TODO(), key).Result()
 	if err != nil {
-		return err
+		return "", err
 	}
-	err = json.Unmarshal([]byte(val), &value)
-	if err != nil {
-		return err
-	}
-	return nil
+	return val, nil
 }
 
 func (client *RedisClusterClient) SetKey(key string, value interface{}, expiration time.Duration) error {
@@ -74,16 +70,12 @@ func (client *RedisClusterClient) SetKey(key string, value interface{}, expirati
 	return nil
 }
 
-func (client *RedisClient) GetKey(key string, value interface{}) error {
+func (client *RedisClient) GetKey(key string) (string, error) {
 	val, err := client.client.Get(context.TODO(), key).Result()
 	if err != nil {
-		return err
+		return "", err
 	}
-	err = json.Unmarshal([]byte(val), &value)
-	if err != nil {
-		return err
-	}
-	return nil
+	return val, nil
 }
 
 func (client *RedisClient) SetKey(key string, value interface{}, expiration time.Duration) error {

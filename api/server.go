@@ -35,7 +35,7 @@ func (server *Server) setupRouter() {
 
 	taskRoutes := router.Group("/task")
 	taskRoutes.POST("/", server.Create)
-	taskRoutes.GET("/", server.Get)
+	taskRoutes.GET("/:id", server.Get)
 	taskRoutes.PUT("/", server.Update)
 
 	server.router = router
