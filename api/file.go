@@ -5,6 +5,12 @@ import (
 	"net/http"
 )
 
+/*
+curl -X POST http://localhost:12000/upload \
+  -F "file=@/Users/abc/test.zip" \
+  -H "Content-Type: multipart/form-data"
+*/
+
 func (server *Server) Upload(ctx *gin.Context) {
 	file, err := ctx.FormFile("file")
 	if err != nil {
@@ -17,4 +23,11 @@ func (server *Server) Upload(ctx *gin.Context) {
 		return
 	}
 	defer src.Close()
+
+	location, err := server.uploader.Upload(src, "tmp")
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+	ctx.JSON(http.StatusOK, gin.H{"path": location})
 }
