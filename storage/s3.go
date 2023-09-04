@@ -23,11 +23,13 @@ func NewS3Uploader(config utils.Config) (Store, error) {
 	return &S3Uploader{config: config, uploader: uploader}, nil
 }
 
+// Need to enable S3 ACL and set the block public access ACL permissions
 func (uploader *S3Uploader) Upload(fileReader io.Reader, fileKey string) (string, error) {
 	result, err := uploader.uploader.Upload(&s3manager.UploadInput{
 		Bucket: aws.String(uploader.config.AWSBucket),
 		Key:    aws.String(fileKey),
 		Body:   fileReader,
+		ACL:    aws.String("public-read"),
 	})
 	if err != nil {
 		return "", fmt.Errorf("failed to upload file, %v", err)
