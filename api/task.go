@@ -35,7 +35,7 @@ type URI struct {
 }
 
 func (server *Server) KeyDuration() time.Duration {
-	duration, _ := time.ParseDuration("48h")
+	duration, _ := time.ParseDuration(server.config.RedisKeyDuration)
 	return duration
 }
 
