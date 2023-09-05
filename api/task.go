@@ -3,7 +3,6 @@ package api
 import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"net/http"
 	"time"
 )
@@ -13,21 +12,22 @@ type TaskInfo struct {
 	ModelName    string      `json:"model_name"`
 	ModelVersion string      `json:"model_version"`
 	Status       string      `json:"status"`
-	Runtime      string      `json:"runtime"`
+	RunningTime  string      `json:"running_time"`
 	CreatedAt    time.Time   `json:"created_at"`
 	Outputs      interface{} `json:"outputs"`
 }
 
 type CreateRequest struct {
+	ID           string `json:"id" binding:"required"`
 	ModelName    string `json:"model_name" binding:"required"`
 	ModelVersion string `json:"model_version"`
 }
 
 type UpdateRequest struct {
-	ID      string      `json:"id" binding:"required"`
-	Status  string      `json:"status"`
-	Runtime string      `json:"runtime"`
-	Outputs interface{} `json:"outputs"`
+	ID          string      `json:"id" binding:"required"`
+	Status      string      `json:"status"`
+	RunningTime string      `json:"running_time"`
+	Outputs     interface{} `json:"outputs"`
 }
 
 type URI struct {
@@ -46,11 +46,11 @@ func (server *Server) Create(ctx *gin.Context) {
 		return
 	}
 	task := &TaskInfo{
-		ID:           uuid.New().String(),
+		ID:           req.ID,
 		ModelName:    req.ModelName,
 		ModelVersion: req.ModelVersion,
 		Status:       "pending",
-		Runtime:      "",
+		RunningTime:  "",
 		CreatedAt:    time.Now(),
 		Outputs:      nil,
 	}
@@ -104,8 +104,8 @@ func (server *Server) Update(ctx *gin.Context) {
 	if req.Status != "" {
 		task.Status = req.Status
 	}
-	if req.Runtime != "" {
-		task.Runtime = req.Runtime
+	if req.RunningTime != "" {
+		task.RunningTime = req.RunningTime
 	}
 	if req.Outputs != nil {
 		task.Outputs = req.Outputs
