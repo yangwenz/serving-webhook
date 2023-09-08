@@ -34,30 +34,31 @@ func (m *MockCache) EXPECT() *MockCacheMockRecorder {
 	return m.recorder
 }
 
-// getKey mocks base method.
-func (m *MockCache) getKey(arg0 string, arg1 interface{}) error {
+// GetKey mocks base method.
+func (m *MockCache) GetKey(arg0 string) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "getKey", arg0, arg1)
+	ret := m.ctrl.Call(m, "GetKey", arg0)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetKey indicates an expected call of GetKey.
+func (mr *MockCacheMockRecorder) GetKey(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetKey", reflect.TypeOf((*MockCache)(nil).GetKey), arg0)
+}
+
+// SetKey mocks base method.
+func (m *MockCache) SetKey(arg0 string, arg1 interface{}, arg2 time.Duration) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "SetKey", arg0, arg1, arg2)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
-// getKey indicates an expected call of getKey.
-func (mr *MockCacheMockRecorder) getKey(arg0, arg1 interface{}) *gomock.Call {
+// SetKey indicates an expected call of SetKey.
+func (mr *MockCacheMockRecorder) SetKey(arg0, arg1, arg2 interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "getKey", reflect.TypeOf((*MockCache)(nil).getKey), arg0, arg1)
-}
-
-// setKey mocks base method.
-func (m *MockCache) setKey(arg0 string, arg1 interface{}, arg2 time.Duration) error {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "setKey", arg0, arg1, arg2)
-	ret0, _ := ret[0].(error)
-	return ret0
-}
-
-// setKey indicates an expected call of setKey.
-func (mr *MockCacheMockRecorder) setKey(arg0, arg1, arg2 interface{}) *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "setKey", reflect.TypeOf((*MockCache)(nil).setKey), arg0, arg1, arg2)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "SetKey", reflect.TypeOf((*MockCache)(nil).SetKey), arg0, arg1, arg2)
 }

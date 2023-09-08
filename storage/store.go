@@ -3,6 +3,7 @@ package storage
 import (
 	"fmt"
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/yangwenz/model-webhook/utils"
@@ -20,6 +21,13 @@ type S3Store struct {
 
 func NewS3Store(config utils.Config) (Store, error) {
 	awsConfig := aws.Config{Region: aws.String(config.AWSRegion)}
+	if config.AWSAccessKeyID != "" && config.AWSSecretAccessKey != "" {
+		awsConfig = aws.Config{
+			Region: aws.String(config.AWSRegion),
+			Credentials: credentials.NewStaticCredentials(
+				config.AWSAccessKeyID, config.AWSSecretAccessKey, ""),
+		}
+	}
 	sess := session.Must(session.NewSession(&awsConfig))
 	uploader := s3manager.NewUploader(sess, func(u *s3manager.Uploader) {
 		u.Concurrency = 5
