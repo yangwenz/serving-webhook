@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-webhook
+  labels:
+    app: model-webhook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: model-webhook
+  template:
+    metadata:
+      labels:
+        app: model-webhook
+    spec:
+      containers:
+        - name: model-webhook-container
+          image: yangwenz/model-webhook:v1
+          imagePullPolicy: Always
+          ports:
+            - name: control
+              containerPort: 12000
+          env:
+            - name: GIN_MODE
+              value: release
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 12000
+            initialDelaySeconds: 5
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 12000
+            initialDelaySeconds: 5
+            periodSeconds: 20
