@@ -37,6 +37,7 @@ func NewS3Store(config utils.Config) (Store, error) {
 
 // Need to enable S3 ACL and set the block public access ACL permissions
 // TODO: Use Gateway Endpoints for S3
+// TODO: Check https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints-s3.html
 func (uploader *S3Store) Upload(fileReader io.Reader, fileKey string) (string, error) {
 	result, err := uploader.uploader.Upload(&s3manager.UploadInput{
 		Bucket: aws.String(uploader.config.AWSBucket),
