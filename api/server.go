@@ -27,13 +27,15 @@ func NewServer(config utils.Config, store storage.Store, cache storage.Cache) (*
 
 func (server *Server) setupRouter() {
 	router := gin.Default()
-	router.MaxMultipartMemory = 16 << 20 // 16 MiB
+	router.MaxMultipartMemory = 32 << 20 // 32 MiB
 
 	router.GET("/live", server.checkHealth)
 	router.GET("/ready", server.checkHealth)
-	router.POST("/upload", server.Upload)
 
-	taskRoutes := router.Group("/task")
+	fileRoutes := router.Group("/upload").Use(authMiddleware(server.config))
+	fileRoutes.POST("/", server.Upload)
+
+	taskRoutes := router.Group("/task").Use(authMiddleware(server.config))
 	taskRoutes.POST("/", server.Create)
 	taskRoutes.GET("/:id", server.Get)
 	taskRoutes.PUT("/", server.Update)

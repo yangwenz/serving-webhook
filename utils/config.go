@@ -11,6 +11,7 @@ type Config struct {
 	RedisAddress       string `mapstructure:"REDIS_ADDRESS"`
 	RedisClusterMode   bool   `mapstructure:"REDIS_CLUSTER_MODE"`
 	RedisKeyDuration   string `mapstructure:"REDIS_KEY_DURATION"`
+	SecretAPIKey       string `mapstructure:"SECRET_APIKEY"`
 	AWSBucket          string `mapstructure:"AWS_BUCKET"`
 	AWSRegion          string `mapstructure:"AWS_REGION"`
 	AWSS3UseAccelerate bool   `mapstructure:"AWS_S3_USE_ACCELERATE"`
