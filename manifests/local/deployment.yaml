@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: model-webhook
+  name: serving-webhook
   labels:
-    app: model-webhook
+    app: serving-webhook
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: model-webhook
+      app: serving-webhook
   template:
     metadata:
       labels:
-        app: model-webhook
+        app: serving-webhook
     spec:
       containers:
-        - name: model-webhook-container
-          image: yangwenz/model-webhook:v1
+        - name: serving-webhook-container
+          image: yangwenz/model-webhook:v2
           imagePullPolicy: Always
           ports:
             - name: control

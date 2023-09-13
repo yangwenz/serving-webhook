@@ -10,7 +10,7 @@ mock:
 	mockgen -package mockstore -destination storage/mock/cache.go github.com/yangwenz/model-webhook/storage Cache
 
 docker:
-	docker build -t yangwenz/model-webhook:v1 .
-	docker push yangwenz/model-webhook:v1
+	docker build -t yangwenz/model-webhook:v2 .
+	docker push yangwenz/model-webhook:v2
 
 .PHONY: server test mock
