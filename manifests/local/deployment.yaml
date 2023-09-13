@@ -24,6 +24,18 @@ spec:
           env:
             - name: GIN_MODE
               value: release
+            - name: REDIS_ADDRESS
+              value: "redis-master:6379"
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: webhook-secret
+                  key: access-key-id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: webhook-secret
+                  key: secret-access-key
           livenessProbe:
             httpGet:
               path: /live
