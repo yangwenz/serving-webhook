@@ -2,8 +2,8 @@ package api
 
 import (
 	"errors"
+	"github.com/HyperGAI/serving-webhook/utils"
 	"github.com/gin-gonic/gin"
-	"github.com/yangwenz/model-webhook/utils"
 	"net/http"
 	"strings"
 )

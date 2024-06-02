@@ -1,17 +1,18 @@
 package api
 
 import (
+	db "github.com/HyperGAI/serving-webhook/db/sqlc"
+	"github.com/HyperGAI/serving-webhook/storage"
+	"github.com/HyperGAI/serving-webhook/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/require"
-	"github.com/yangwenz/model-webhook/storage"
-	"github.com/yangwenz/model-webhook/utils"
 	"os"
 	"testing"
 )
 
-func newTestServer(t *testing.T, store storage.Store, cache storage.Cache) *Server {
+func newTestServer(t *testing.T, store storage.Store, cache storage.Cache, database db.Store) *Server {
 	config := utils.Config{}
-	server, err := NewServer(config, store, cache)
+	server, err := NewServer(config, store, cache, database)
 	require.NoError(t, err)
 	return server
 }

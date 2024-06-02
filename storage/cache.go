@@ -3,8 +3,8 @@ package storage
 import (
 	"context"
 	"encoding/json"
+	"github.com/HyperGAI/serving-webhook/utils"
 	goredis "github.com/redis/go-redis/v9"
-	"github.com/yangwenz/model-webhook/utils"
 	"time"
 )
 
@@ -38,9 +38,10 @@ func NewRedisClient(config utils.Config) (Cache, error) {
 		return &RedisClusterClient{client: client}, nil
 	} else {
 		client := goredis.NewClient(&goredis.Options{
-			Addr:     config.RedisAddress,
-			Password: "",
-			DB:       0, // use default DB
+			Addr:       config.RedisAddress,
+			Password:   "",
+			DB:         0, // use default DB
+			MaxRetries: 10,
 		})
 		_, err := client.Ping(context.TODO()).Result()
 		if err != nil {

@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: serving-webhook
+  labels:
+    app: serving-webhook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: serving-webhook
+  template:
+    metadata:
+      labels:
+        app: serving-webhook
+    spec:
+      containers:
+        - name: serving-webhook-container
+          image: asia-southeast1-docker.pkg.dev/hybrid-autonomy-401202/ml-platform/serving-webhook:v1.1.6
+          imagePullPolicy: Always
+          ports:
+            - name: control
+              containerPort: 12000
+          env:
+            - name: GIN_MODE
+              value: release
+            - name: REDIS_ADDRESS
+              value: "10.148.0.27:6379"
+            - name: REDIS_KEY_DURATION
+              value: "48h"
+            - name: REDIS_CLUSTER_MODE
+              value: "true"
+            - name: DB_SOURCE
+              value: "postgresql://root:secret@10.33.97.5:5432/serving_webhook?sslmode=disable"
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: webhook-secret
+                  key: access-key-id
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: webhook-secret
+                  key: secret-access-key
+            - name: AWS_REGION
+              value: "us-east-2"
+            - name: AWS_BUCKET
+              value: "hypergai-upload-tmp"
+          resources:
+            limits:
+              cpu: "4"
+              memory: "1Gi"
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 12000
+            initialDelaySeconds: 5
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 12000
+            initialDelaySeconds: 5
+            periodSeconds: 20

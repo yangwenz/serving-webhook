@@ -1,0 +1,1 @@
+CREATE INDEX model_status_index ON task (model_name, status);

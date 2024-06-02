@@ -17,6 +17,8 @@ type Config struct {
 	AWSS3UseAccelerate bool   `mapstructure:"AWS_S3_USE_ACCELERATE"`
 	AWSAccessKeyID     string `mapstructure:"AWS_ACCESS_KEY_ID"`
 	AWSSecretAccessKey string `mapstructure:"AWS_SECRET_ACCESS_KEY"`
+	DBSource           string `mapstructure:"DB_SOURCE"`
+	MigrationURL       string `mapstructure:"MIGRATION_URL"`
 }
 
 // LoadConfig reads configuration from file or environment variables.
