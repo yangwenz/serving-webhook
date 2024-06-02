@@ -33,7 +33,7 @@ The role of this repo is to provide webhooks for uploading files to S3 or GCP cl
 prediction task information:
 
 1. After the model gets the results, if the results are images or files (specified by using
-   [kservehelper](https://github.com/HyperGAI/kserve-helper)), the webhook will be called to upload these
+   [kservehelper](https://github.com/yangwenz/kserve-helper)), the webhook will be called to upload these
    files to external storage and return the file URLs.
 2. The task information is stored in redis or redis cluster. The task info includes "model name", "status",
    "running time", "outputs", etc.
