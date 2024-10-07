@@ -29,10 +29,9 @@ make server
 
 ## Overview
 
-The role of this repo is to provide webhooks for uploading files to S3 or GCP cloud storage and storing
-prediction task information:
+This repo provides webhooks for uploading files to S3 or GCS and storing prediction task information:
 
-1. After the model gets the results, if the results are images or files (specified by using
+1. After the model prediction is finished, if the prediction results are images or files (specified by using
    [kservehelper](https://github.com/yangwenz/kserve-helper)), the webhook will be called to upload these
    files to external storage and return the file URLs.
 2. The task information is stored in redis or redis cluster. The task info includes "model name", "status",
