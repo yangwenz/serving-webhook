@@ -31,4 +31,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: yangwenz/serving-webhook:${{ steps.env.RELEASE_VERSION }}
+          tags: yangwenz/serving-webhook:${{ env.RELEASE_VERSION }}
